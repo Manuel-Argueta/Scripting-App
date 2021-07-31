@@ -1,0 +1,35 @@
+.text-editor {
+ height: 400px;
+ width: 80%; 
+ max-width: 100%;
+ margin-top: 50px;
+ resize: none;
+}
+
+.col {
+    float: left;
+    width: 50%;
+}
+
+#tutorialMapBox, #levelOneMapBox {
+    width: 400px;
+    height: 400px;
+    margin-top: 50px;
+    margin-left: 25%;
+}
+
+.block {
+    width: 20px;
+    height: 20px;
+    outline: 1px solid;
+    float: left;
+}
+
+#pepe_sprite {
+    width: 20px;
+}
+
+.console-area {
+    border: black 1px solid;
+    width: 80%;
+}
