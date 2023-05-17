@@ -1,21 +1,24 @@
-.text-editor {
- height: 400px;
- width: 80%; 
- max-width: 100%;
- margin-top: 50px;
- resize: none;
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600&display=swap');
+
+body {
+    font-family: 'Inconsolata', monospace;
+    background-color: rgb(31, 29, 29);
 }
 
+.row {
+    margin-bottom: 5vh;
+}
 .col {
     float: left;
     width: 50%;
 }
 
-#tutorialMapBox, #levelOneMapBox {
-    width: 400px;
-    height: 400px;
-    margin-top: 50px;
-    margin-left: 25%;
+.mapBoxStyle {
+    width: 600px;
+    height: 600px;
+    margin-top: 5vh;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .block {
@@ -23,13 +26,55 @@
     height: 20px;
     outline: 1px solid;
     float: left;
+    border-radius: 2px;
+    background-color:rgb(130, 130, 133);
 }
 
 #pepe_sprite {
     width: 20px;
 }
 
+.textEditorStyle {
+    height: 50vh;
+    width: 45vw; 
+    resize: none;
+    background-color: black;
+    color: rgb(211, 157, 255);
+    font-size: 3.5vh;
+}
+
+#tutorial-instructions {
+    color: rgb(224, 215, 215);
+    margin-left: 0.5vw;
+}
 .console-area {
-    border: black 1px solid;
-    width: 80%;
+    border: black 4px solid;
+    width: 35vw; 
+    background-color:rgb(101, 101, 103);
+    color: rgb(224, 215, 215);
+    border-radius: 5px;
+    padding: 1vh;
+    font-size: 3vh;
+    margin-top: 2vh;
+}
+
+.consoleLabel {
+    margin-top: 0.25vw;;
+}
+
+.controlButton {
+    font-family: 'Inconsolata', monospace;
+    margin-top: 5vh;
+    margin-bottom: 2vh;
+    border: solid 2px rgb(119, 117, 117);
+    border-radius: 5px;
+    padding: 1vh;
+    font-size: 2.5vh;
+    font-weight: bold;
+    color:rgb(0, 0, 0);
+    background-color:rgb(211, 157, 255)
+}
+
+.navButton {
+    
 }

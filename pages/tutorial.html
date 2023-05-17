@@ -8,55 +8,54 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../styles/styles.css">
-    <script src="../scripts/tutorial.js"></script>
-    <script type="text/javascript">
-        window.onload = displayTutorialMap;
-    </script>
+    <script type="module" src="../scripts/tutorial.js"></script>
 </head>
 
 <body>
-    <div class = "row">
-    <div class = "col">
-    <div id="tutorialMapBox">
-    </div>
-    <div>
-    </div id = "tutorial-instructions">
-        <h4>Welcome to the Scripting Activity Tutorial.</h4>
-        <p>In this level you will learn the basics of programming in PEPE. 
-            This fun and simple language will allow you to control the Pepe The Frog character
-            through scripts that you write! Here are the basics: </p>
-        <ul> 
-            <li> Each command that write MUST begin with the keyword "GO" (case-sensitive)</li>
-            <li> Each command must specify what direction the character will move: "U" to move UP, 
-                "D" to move DOWN, "R" to move RIGHT, and "L" to move LEFT.</li>
-            <li> Each command must use parenthesis DIRECTLY AFTER specifcying the direction of movement. 
-                You can specify the # of REPETITIONS (as a NUMBER) inside of these parameters as an argument 
-                OR leave it BLANK and default the # of REPETITIONS to 1.</li>
-            <li> VERY IMPORTANT: Each command MUST be written on a new line in order for it be considered
-                seperate to the previous command. There is no need for annoying SEMICOLONS like other languages (..psst Java)
-                Failing to seperate these commands will result in a program that does not work as intended or may not work at all.
-            </li>
-
-        </ul>
-    </div>
-    <div class = "col">
-    <textarea class="text-editor" id = "tutorial-text-editor" placeholder="Please enter your code here. EX. GO UP(2)"></textarea>
-    <div class = "console-area">
-        <h4>Console Output</h4>
-        <div id = "console-output"></div>
-    </div>
-
-    <!-- <button onclick="makeMove('U')">Up</button>
-    <button onclick="makeMove('D')">Down</button>
-    <button onclick="makeMove('L')">Left</button>
-    <button onclick="makeMove('R')">Right</button> -->
-
-    <button onclick = "proccesUserCode()">Submit Program</button>
-    <button onclick = "resetMap()">Reset Map</button>
-    <button onclick = "resetConsole()">Clear Console</button>
-    </div>
-    </div>
     <a href="../index.html">Go Home</a>
+    <div class="row">
+        <div class="col">
+            <div>
+                <button id="submitCode" class="controlButton">Submit Program</button>
+                <button id="resetMapButton" class="controlButton">Reset Map</button>
+                <button id="resetConsoleButton" class="controlButton">Clear Console</button>
+            </div>
+            <textarea class="textEditorStyle" id="text-editor"
+                placeholder="Please enter your code here. EX. GO UP(2)"></textarea>
+            <div class="console-area">
+                <p class="consoleLabel"> &gt Console Output</Console>
+                </p>
+                <div id="console-output"></div>
+            </div>
+            <div id="tutorial-instructions">
+                <h2>Welcome to the Scripting with PEPE Tutorial.</h2>
+                <p>In this level you will learn the basics of programming in PEPE.
+                    This fun and simple language will allow you to control the Pepe The Frog character
+                    through scripts that you write! Here are the basics: </p>
+                <ul>
+                    <li> Each command that you write MUST begin with the keyword "GO" (case-sensitive)</li>
+                    <li> Each command must specify what direction the character will move: "U" to move UP,
+                        "D" to move DOWN, "R" to move RIGHT, and "L" to move LEFT.</li>
+                    <li> Each command must use parenthesis DIRECTLY AFTER specifying the direction of movement.
+                        You can specify the # of REPETITIONS (as a NUMBER) inside of these parameters as an argument
+                        OR leave it BLANK and default the # of REPETITIONS to 1.</li>
+                    <li> VERY IMPORTANT: Each command MUST be written on a new line in order for it be considered
+                        seperate to the previous command. There is no need for annoying SEMICOLONS like other languages
+                        (..psst Java)
+                        Failing to seperate these commands will result in a program that does not work as intended or
+                        may not work at all.
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="col">
+
+            <div class = "mapBoxStyle" id="tutorialMapBox">
+            </div>
+
+        </div>
+    </div>
 </body>
 
-</html> 
+</html>

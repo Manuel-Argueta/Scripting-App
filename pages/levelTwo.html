@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Level Two</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../styles/styles.css">
+    <script type="module" src="../scripts/levelTwo.js"></script>
+</head>
+
+<body>
+    <a href="../index.html">Go Home</a>
+    <div class="row">
+        <div class="col">
+            <button id="submitCode" class="controlButton">Submit Program</button>
+            <button id="resetMapButton" class="controlButton">Reset Map</button>
+            <button id="resetConsoleButton" class="controlButton">Clear Console</button>
+            <textarea class="textEditorStyle" id="text-editor"
+                placeholder="Please enter your code here. EX. GO UP(2)"></textarea>
+            <div class="console-area">
+                <p class="consoleLabel">> Console Output</p>
+                <div id="console-output"></div>
+            </div>
+            <div id="tutorial-instructions">
+                <h2>Welcome to the Second Challenge of the Scripting Activity</h2>
+                <p>Write a script that will allow Pepe the Frog to reach the end goal (the WHITE square) WHILE avoding
+                    the red WALLS.</p>
+                </ul>
+            </div>
+        </div>
+        <div class="col">
+            <div class="mapBoxStyle" id="levelTwoMapBox">
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
