@@ -12,7 +12,7 @@ window.onload = () => {
 }
 
 submitCodeBtn.addEventListener("click", () => {
-  processUserCode(levelMapW, levelMapH, "levelOneMapBox",true, GOAL_BLOCK);
+  processUserCode(levelMapW, levelMapH, "levelOneMapBox",1, GOAL_BLOCK);
   checkIfCompleted(GOAL_BLOCK);
 });
 resetMapBtn.addEventListener("click", () => {

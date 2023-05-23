@@ -11,7 +11,7 @@ window.onload = () => {
 }
 
 submitCodeBtn.addEventListener("click", () => {
-  processUserCode(tutorialMapW, tutorialMapH, "tutorialMapBox",false,0);
+  processUserCode(tutorialMapW, tutorialMapH, "tutorialMapBox",0,0);
 });
 resetMapBtn.addEventListener("click", () => {
   resetMap(tutorialMapW, tutorialMapH, "tutorialMapBox");

@@ -1,7 +1,8 @@
 
 let map = [];
+let PREVIOUS_BLOCKS = [];
 let pepeCurrentI = 0, pepeCurrentJ = 0;
-const restrictedWalls = ['block19','block360','block361','block381','block18','block38','block39']
+const restrictedWalls = ['block898', 'block868', 'block869','block899']
 
 export const createGrid = (width, height) => {
   let uniqueId = 0;
@@ -19,6 +20,7 @@ export const createGrid = (width, height) => {
 }
 
 export const createLevelGrid = (width, height, goalBlock) => {
+  restrictedWalls.push(`block${goalBlock}`)
   let uniqueId = 0;
   for (let i = 0; i < width; i++) {
     map[i] = [];
@@ -28,12 +30,38 @@ export const createLevelGrid = (width, height, goalBlock) => {
       tmpDiv.className = "block";
       tmpDiv.id = "block" + uniqueId.toString();
       if (tmpDiv.id == `block${goalBlock}`) {
-          tmpDiv.style["background-color"] = "white";
+        tmpDiv.style["background-color"] = "white";
       }
       map[i][j] = tmpDiv;
       uniqueId++;
     }
   }
+}
+
+export const createBlockedGrid = (width, height, goalBlock, numWalls, density) => {
+  let wallList = getBlockedWalls(width, height, numWalls, density);
+  restrictedWalls.push(`block${goalBlock}`)
+  let uniqueId = 0;
+  let currentWallI = 0;
+  for (let i = 0; i < width; i++) {
+    map[i] = [];
+    for (let j = 0; j < height; j++) {
+      let tmpDiv = document.createElement("div");
+      tmpDiv.innerHTML = " ";
+      tmpDiv.className = "block";
+      tmpDiv.id = "block" + uniqueId.toString();
+      if (tmpDiv.id == `block${goalBlock}`) {
+        tmpDiv.style["background-color"] = "white";
+      }
+      if (wallList[currentWallI]) {
+        tmpDiv.style["background-color"] = "red";
+      }
+      map[i][j] = tmpDiv;
+      uniqueId++;
+      currentWallI++;
+    }
+  }
+  PREVIOUS_BLOCKS = map;
 }
 
 export const deleteMap = (width, height) => {
@@ -65,43 +93,9 @@ export const displayMap = (width, height, elementID) => {
   }
 }
 
-//MAKE STATIC
-export const displayBlockedMap = (width, height, elementID) => {
-  let mapBox = document.getElementById(elementID);
-  let charSprite = document.createElement("img");
-  charSprite.id = "pepe_sprite"
-  charSprite.src = "../assets/pepe_sprite.png"
-  for (let i = 0; i < width; i++) {
-    for (let j = 0; j < height; j++) {
-      let possWallI = getRandomInt(0,20);
-      let possWallJ = getRandomInt(0,20);
-      if (restrictedWalls.includes(map[i][j].id) == false) {
-            if (possWallI == i || possWallJ == j) {
-            map[i][j].style["background-color"] = "red"
-            }
-      }
-      if (map[i][j].id == "block"+((height*width)-width).toString()) {
-        map[i][j].appendChild(charSprite);
-        (pepeCurrentI = i), (pepeCurrentJ = j);
-        map[pepeCurrentI][pepeCurrentJ].style["background-color"] = "green"
-      }
-      mapBox.appendChild(map[i][j]);
-    }
-  }
-}
-
-
-export const updateMap = (width, height, elementID) => {
-  let mapBox = document.getElementById(elementID);
-  for (let i = 0; i < width; i++) {
-    for (let j = 0; j < height; j++) {
-      mapBox.appendChild(map[i][j]);
-    }
-  }
-}
-
 //FIX MAKE MOVE TO INCLUDE THE CHECK COLLISOIN METHOD AND PREVENT THE MAP FROM CHANGING
 export const makeMove = (moveType, width, height, elementID) => {
+  let mapBox = document.getElementById(elementID);
   let errorLog = document.createElement("p"), endLog = document.createElement("p");
   endLog.innerHTML = " > Program terminated with OUT OF BOUNDS error."
   let charSprite = document.getElementById("pepe_sprite");
@@ -110,7 +104,7 @@ export const makeMove = (moveType, width, height, elementID) => {
     if (pepeCurrentI - 1 >= 0) {
       map[pepeCurrentI - 1][pepeCurrentJ].style["background-color"] = "green"
       map[pepeCurrentI - 1][pepeCurrentJ].appendChild(charSprite);
-      updateMap(width, height, elementID);
+      mapBox.replaceChild(map[pepeCurrentI - 1][pepeCurrentJ], map[pepeCurrentI - 1][pepeCurrentJ]);
       pepeCurrentI -= 1;
     } else {
       errorLog.innerHTML = " > Error - U Move Out Of BOUNDS";
@@ -122,7 +116,7 @@ export const makeMove = (moveType, width, height, elementID) => {
     if (pepeCurrentI + 1 < height) {
       map[pepeCurrentI + 1][pepeCurrentJ].style["background-color"] = "green"
       map[pepeCurrentI + 1][pepeCurrentJ].appendChild(charSprite);
-      updateMap(width, height, elementID);
+      mapBox.replaceChild(map[pepeCurrentI + 1][pepeCurrentJ], map[pepeCurrentI + 1][pepeCurrentJ]);
       pepeCurrentI += 1;
     } else {
       errorLog.innerHTML = " > Error - D Move Out Of BOUNDS";
@@ -134,7 +128,7 @@ export const makeMove = (moveType, width, height, elementID) => {
     if (map[pepeCurrentI][pepeCurrentJ + 1] != undefined) {
       map[pepeCurrentI][pepeCurrentJ + 1].style["background-color"] = "green"
       map[pepeCurrentI][pepeCurrentJ + 1].appendChild(charSprite);
-      updatemap(width, height, elementID);
+      mapBox.replaceChild(map[pepeCurrentI][pepeCurrentJ + 1], map[pepeCurrentI][pepeCurrentJ + 1]);
       pepeCurrentJ += 1;
     } else {
       errorLog.innerHTML = " > Error - R Move Out Of BOUNDS";
@@ -146,7 +140,7 @@ export const makeMove = (moveType, width, height, elementID) => {
     if (map[pepeCurrentI][pepeCurrentJ - 1] != undefined) {
       map[pepeCurrentI][pepeCurrentJ - 1].style["background-color"] = "green"
       map[pepeCurrentI][pepeCurrentJ - 1].appendChild(charSprite);
-      updateMap(width, height, elementID);
+      mapBox.replaceChild(map[pepeCurrentI][pepeCurrentJ - 1], map[pepeCurrentI][pepeCurrentJ - 1]);
       pepeCurrentJ -= 1;
     } else {
       errorLog.innerHTML = " > Error - L Move Out Of BOUNDS";
@@ -166,11 +160,13 @@ export const checkBasicLineSyntax = (currLine) => {
   }
 }
 
-export const processUserCode = (width, height, elementID,levelBool, goalBlock) => {
-  if (levelBool)
+export const processUserCode = (width, height, elementID, levelNum, goalBlock) => {
+  if (levelNum == 1)
     resetLevelMap(width, height, elementID, goalBlock);
-  else 
-    resetMap(width,height,elementID)
+  else if (levelNum == 0)
+    resetMap(width, height, elementID)
+  else if (levelNum == 2)
+    refreshPlayer()
   const re = '\n'
   const validDir = ['U', 'D', 'L', 'R']
   let currMove = { moveType: "", moveRep: "" }, moveList = []
@@ -279,9 +275,23 @@ export const resetLevelMap = (width, height, elementID, goalBlock) => {
   displayMap(width, height, elementID);
 }
 
+export const getBlockedWalls = (width, height, numWalls, density) => {
+  let tempWalls = [];
+  for (let i = 0; i < width; i++) {
+    for (let j = 0; j < height; j++) {
+      if (Math.random() <= density && numWalls > 0 && !restrictedWalls.includes(`block${width*height}`)) {
+        tempWalls.push(true);
+        numWalls--;
+      } else {
+        tempWalls.push(false);
+      }
+    }
+  }
+  return tempWalls;
+}
 
 export const getRandomInt = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min) + min); 
+  return Math.floor(Math.random() * (max - min) + min);
 }
