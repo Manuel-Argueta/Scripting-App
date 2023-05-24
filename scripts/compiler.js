@@ -1,6 +1,6 @@
 
 let map = [];
-let PREVIOUS_BLOCKS = [];
+let PREVIOUS_BLOCK = [];
 let pepeCurrentI = 0, pepeCurrentJ = 0;
 const restrictedWalls = ['block898', 'block868', 'block869','block899']
 
@@ -38,9 +38,7 @@ export const createLevelGrid = (width, height, goalBlock) => {
   }
 }
 
-export const createBlockedGrid = (width, height, goalBlock, numWalls, density) => {
-  let wallList = getBlockedWalls(width, height, numWalls, density);
-  restrictedWalls.push(`block${goalBlock}`)
+export const createBlockedGrid = (width, height, goalBlock,wallList) => {
   let uniqueId = 0;
   let currentWallI = 0;
   for (let i = 0; i < width; i++) {
@@ -61,7 +59,7 @@ export const createBlockedGrid = (width, height, goalBlock, numWalls, density) =
       currentWallI++;
     }
   }
-  PREVIOUS_BLOCKS = map;
+  PREVIOUS_BLOCK = map;
 }
 
 export const deleteMap = (width, height) => {
@@ -93,6 +91,14 @@ export const displayMap = (width, height, elementID) => {
   }
 }
 
+export const refreshMap = (width, height, elementID, goalBlock, wallList) => {
+  //console.log("called");
+  deleteMap(width, height);
+  createBlockedGrid(width, height, goalBlock, wallList);
+  displayMap(width, height, elementID);
+}
+
+
 //FIX MAKE MOVE TO INCLUDE THE CHECK COLLISOIN METHOD AND PREVENT THE MAP FROM CHANGING
 export const makeMove = (moveType, width, height, elementID) => {
   let mapBox = document.getElementById(elementID);
@@ -102,10 +108,15 @@ export const makeMove = (moveType, width, height, elementID) => {
   let userConsole = document.getElementById("console-output")
   if (moveType == "U") {
     if (pepeCurrentI - 1 >= 0) {
-      map[pepeCurrentI - 1][pepeCurrentJ].style["background-color"] = "green"
-      map[pepeCurrentI - 1][pepeCurrentJ].appendChild(charSprite);
-      mapBox.replaceChild(map[pepeCurrentI - 1][pepeCurrentJ], map[pepeCurrentI - 1][pepeCurrentJ]);
-      pepeCurrentI -= 1;
+      if (checkIfWallCollision(pepeCurrentI - 1, pepeCurrentJ)) {
+        console.log("The UP Move is a Wall");
+        return 0;
+      } else {
+        map[pepeCurrentI - 1][pepeCurrentJ].style["background-color"] = "green"
+        map[pepeCurrentI - 1][pepeCurrentJ].appendChild(charSprite);
+        mapBox.replaceChild(map[pepeCurrentI - 1][pepeCurrentJ], map[pepeCurrentI - 1][pepeCurrentJ]);
+        pepeCurrentI -= 1;
+      }
     } else {
       errorLog.innerHTML = " > Error - U Move Out Of BOUNDS";
       userConsole.appendChild(errorLog);
@@ -114,10 +125,14 @@ export const makeMove = (moveType, width, height, elementID) => {
     }
   } else if (moveType == "D") {
     if (pepeCurrentI + 1 < height) {
-      map[pepeCurrentI + 1][pepeCurrentJ].style["background-color"] = "green"
-      map[pepeCurrentI + 1][pepeCurrentJ].appendChild(charSprite);
-      mapBox.replaceChild(map[pepeCurrentI + 1][pepeCurrentJ], map[pepeCurrentI + 1][pepeCurrentJ]);
-      pepeCurrentI += 1;
+      if (checkIfWallCollision(pepeCurrentI + 1, pepeCurrentJ)) {
+        return 0;
+      } else {
+        map[pepeCurrentI + 1][pepeCurrentJ].style["background-color"] = "green"
+        map[pepeCurrentI + 1][pepeCurrentJ].appendChild(charSprite);
+        mapBox.replaceChild(map[pepeCurrentI + 1][pepeCurrentJ], map[pepeCurrentI + 1][pepeCurrentJ]);
+        pepeCurrentI += 1;
+      }
     } else {
       errorLog.innerHTML = " > Error - D Move Out Of BOUNDS";
       userConsole.appendChild(errorLog);
@@ -126,10 +141,14 @@ export const makeMove = (moveType, width, height, elementID) => {
     }
   } else if (moveType == "R") {
     if (map[pepeCurrentI][pepeCurrentJ + 1] != undefined) {
-      map[pepeCurrentI][pepeCurrentJ + 1].style["background-color"] = "green"
-      map[pepeCurrentI][pepeCurrentJ + 1].appendChild(charSprite);
-      mapBox.replaceChild(map[pepeCurrentI][pepeCurrentJ + 1], map[pepeCurrentI][pepeCurrentJ + 1]);
-      pepeCurrentJ += 1;
+      if (checkIfWallCollision(pepeCurrentI, pepeCurrentI)) {
+        return 0;
+      } else {
+        map[pepeCurrentI][pepeCurrentJ + 1].style["background-color"] = "green"
+        map[pepeCurrentI][pepeCurrentJ + 1].appendChild(charSprite);
+        mapBox.replaceChild(map[pepeCurrentI][pepeCurrentJ + 1], map[pepeCurrentI][pepeCurrentJ + 1]);
+        pepeCurrentJ += 1;
+      }
     } else {
       errorLog.innerHTML = " > Error - R Move Out Of BOUNDS";
       userConsole.appendChild(errorLog);
@@ -138,10 +157,14 @@ export const makeMove = (moveType, width, height, elementID) => {
     }
   } else if (moveType == "L") {
     if (map[pepeCurrentI][pepeCurrentJ - 1] != undefined) {
-      map[pepeCurrentI][pepeCurrentJ - 1].style["background-color"] = "green"
-      map[pepeCurrentI][pepeCurrentJ - 1].appendChild(charSprite);
-      mapBox.replaceChild(map[pepeCurrentI][pepeCurrentJ - 1], map[pepeCurrentI][pepeCurrentJ - 1]);
-      pepeCurrentJ -= 1;
+      if (checkIfWallCollision(pepeCurrentI, pepeCurrentJ-1)) {
+        return 0;
+      } else {
+        map[pepeCurrentI][pepeCurrentJ - 1].style["background-color"] = "green"
+        map[pepeCurrentI][pepeCurrentJ - 1].appendChild(charSprite);
+        mapBox.replaceChild(map[pepeCurrentI][pepeCurrentJ - 1], map[pepeCurrentI][pepeCurrentJ - 1]);
+        pepeCurrentJ -= 1;
+      }
     } else {
       errorLog.innerHTML = " > Error - L Move Out Of BOUNDS";
       userConsole.appendChild(errorLog);
@@ -160,13 +183,13 @@ export const checkBasicLineSyntax = (currLine) => {
   }
 }
 
-export const processUserCode = (width, height, elementID, levelNum, goalBlock) => {
+export const processUserCode = (width, height, elementID, levelNum, goalBlock, wallList) => {
   if (levelNum == 1)
     resetLevelMap(width, height, elementID, goalBlock);
   else if (levelNum == 0)
     resetMap(width, height, elementID)
-  else if (levelNum == 2)
-    refreshPlayer()
+  else if (levelNum == 2) 
+    refreshMap(width, height, elementID, goalBlock, wallList)
   const re = '\n'
   const validDir = ['U', 'D', 'L', 'R']
   let currMove = { moveType: "", moveRep: "" }, moveList = []
@@ -253,14 +276,17 @@ export const checkIfCompleted = (goalBlock) => {
   }
 
 }
-export const checkIfWallCollision = () => {
+export const checkIfWallCollision = (i,j) => {
+  //console.log("CALLED TO CHECK")
   let endLog = document.createElement("p");
   let userConsole = document.getElementById("console-output")
-  if (map[pepeCurrentI][pepeCurrentJ].style["background-color"] == "red") {
-    endLog.innerHTML = "You have hit a wall! PLease retry this challenge."
+  if (map[i][j].style["background-color"] == "red") {
+    endLog.innerHTML = "You have hit a wall! Please retry this challenge."
     userConsole.appendChild(endLog)
-    return true
+    return true;
   }
+
+  return false;
 }
 
 export const resetMap = (width, height, elementID) => {
@@ -275,16 +301,29 @@ export const resetLevelMap = (width, height, elementID, goalBlock) => {
   displayMap(width, height, elementID);
 }
 
-export const getBlockedWalls = (width, height, numWalls, density) => {
+
+export const getBlockedWalls = (width, height, numWalls, density, goalBlock) => {
+  restrictedWalls.push(`block${goalBlock}`)
+  restrictedWalls.push(`block${goalBlock - 1}`)
+  restrictedWalls.push(`block${goalBlock + 1}`)
+  restrictedWalls.push(`block${goalBlock + 29}`)
+  restrictedWalls.push(`block${goalBlock + 30}`)
+  restrictedWalls.push(`block${goalBlock + 31}`)
+  restrictedWalls.push(`block${goalBlock - 29}`)
+  restrictedWalls.push(`block${goalBlock - 30}`)
+  restrictedWalls.push(`block${goalBlock - 31}`)
   let tempWalls = [];
+  let currID = 0;
   for (let i = 0; i < width; i++) {
     for (let j = 0; j < height; j++) {
-      if (Math.random() <= density && numWalls > 0 && !restrictedWalls.includes(`block${width*height}`)) {
+      //console.log(restrictedWalls.includes(`block${currID}`), currID);
+      if (Math.random() <= density && numWalls > 0 && !restrictedWalls.includes(`block${currID}`)) {
         tempWalls.push(true);
         numWalls--;
       } else {
         tempWalls.push(false);
       }
+      currID++
     }
   }
   return tempWalls;

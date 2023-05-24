@@ -5,8 +5,8 @@ let submitCodeBtn = document.getElementById("submitCode");
 let resetMapBtn = document.getElementById("resetMapButton");
 let resetConsoleBtn = document.getElementById("resetConsoleButton");
 
-createGrid(tutorialMapW, tutorialMapH);
 window.onload = () => {
+  createGrid(tutorialMapW, tutorialMapH);
   displayMap(tutorialMapW, tutorialMapH, "tutorialMapBox");
 }
 

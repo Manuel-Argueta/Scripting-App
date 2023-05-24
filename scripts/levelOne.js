@@ -6,8 +6,9 @@ let resetMapBtn = document.getElementById("resetMapButton");
 let resetConsoleBtn = document.getElementById("resetConsoleButton");
 const GOAL_BLOCK = 94;
 
-createLevelGrid(levelMapW, levelMapH, GOAL_BLOCK);
+
 window.onload = () => {
+  createLevelGrid(levelMapW, levelMapH, GOAL_BLOCK,100,0.1);
   displayMap(levelMapW, levelMapH, "levelOneMapBox");
 }
 
