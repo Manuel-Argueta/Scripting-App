@@ -1,6 +1,5 @@
 
 let map = [];
-let PREVIOUS_BLOCK = [];
 let pepeCurrentI = 0, pepeCurrentJ = 0;
 const restrictedWalls = ['block898', 'block868', 'block869','block899']
 
@@ -59,7 +58,6 @@ export const createBlockedGrid = (width, height, goalBlock,wallList) => {
       currentWallI++;
     }
   }
-  PREVIOUS_BLOCK = map;
 }
 
 export const deleteMap = (width, height) => {
@@ -92,15 +90,13 @@ export const displayMap = (width, height, elementID) => {
 }
 
 export const refreshMap = (width, height, elementID, goalBlock, wallList) => {
-  //console.log("called");
   deleteMap(width, height);
   createBlockedGrid(width, height, goalBlock, wallList);
   displayMap(width, height, elementID);
 }
 
 
-//FIX MAKE MOVE TO INCLUDE THE CHECK COLLISOIN METHOD AND PREVENT THE MAP FROM CHANGING
-export const makeMove = (moveType, width, height, elementID) => {
+export const makeMove = (moveType, height, elementID) => {
   let mapBox = document.getElementById(elementID);
   let errorLog = document.createElement("p"), endLog = document.createElement("p");
   endLog.innerHTML = " > Program terminated with OUT OF BOUNDS error."
@@ -218,7 +214,6 @@ export const processUserCode = (width, height, elementID, levelNum, goalBlock, w
         }
       }
       for (let j = 0; j < currentLine.length; j++) {
-        //c = currentLine[j]
         let currCopy = currentLine
         if ((/\d/.test(currentLine))) {
           currMove.moveRep = currCopy.replace(/[^0-9]/g, '')
@@ -246,7 +241,7 @@ export const runUserCode = (moves, width, height, elementID) => {
   userConsole.appendChild(runLog)
   for (let i = 0; i < moves.length; i++) {
     for (let j = 0; j < parseInt(moves[i].moveRep); j++) {
-      if (makeMove(moves[i].moveType, width, height, elementID) == 0) {
+      if (makeMove(moves[i].moveType, height, elementID) == 0) {
         return 0
       }
     }
@@ -277,7 +272,6 @@ export const checkIfCompleted = (goalBlock) => {
 
 }
 export const checkIfWallCollision = (i,j) => {
-  //console.log("CALLED TO CHECK")
   let endLog = document.createElement("p");
   let userConsole = document.getElementById("console-output")
   if (map[i][j].style["background-color"] == "red") {
@@ -316,7 +310,6 @@ export const getBlockedWalls = (width, height, numWalls, density, goalBlock) => 
   let currID = 0;
   for (let i = 0; i < width; i++) {
     for (let j = 0; j < height; j++) {
-      //console.log(restrictedWalls.includes(`block${currID}`), currID);
       if (Math.random() <= density && numWalls > 0 && !restrictedWalls.includes(`block${currID}`)) {
         tempWalls.push(true);
         numWalls--;
