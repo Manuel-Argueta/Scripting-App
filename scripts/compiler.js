@@ -1,6 +1,6 @@
 
 let map = [];
-let pepeCurrentI = 0, pepeCurrentJ = 0;
+let dogeCurrentI = 0, dogeCurrentJ = 0;
 const restrictedWalls = ['block898', 'block868', 'block869','block899']
 
 export const createGrid = (width, height) => {
@@ -75,14 +75,14 @@ export const deleteMap = (width, height) => {
 export const displayMap = (width, height, elementID) => {
   let mapBox = document.getElementById(elementID);
   let charSprite = document.createElement("img");
-  charSprite.id = "pepe_sprite"
-  charSprite.src = "../assets/pepe_sprite.png"
+  charSprite.id = "doge_sprite"
+  charSprite.src = "../assets/doge_sprite.png"
   for (let i = 0; i < width; i++) {
     for (let j = 0; j < height; j++) {
       if (map[i][j].id == "block" + ((height * width) - 1).toString()) {
         map[i][j].appendChild(charSprite);
-        (pepeCurrentI = i), (pepeCurrentJ = j);
-        map[pepeCurrentI][pepeCurrentJ].style["background-color"] = "green"
+        (dogeCurrentI = i), (dogeCurrentJ = j);
+        map[dogeCurrentI][dogeCurrentJ].style["background-color"] = "green"
       }
       mapBox.appendChild(map[i][j]);
     }
@@ -100,18 +100,18 @@ export const makeMove = (moveType, height, elementID) => {
   let mapBox = document.getElementById(elementID);
   let errorLog = document.createElement("p"), endLog = document.createElement("p");
   endLog.innerHTML = " > Program terminated with OUT OF BOUNDS error."
-  let charSprite = document.getElementById("pepe_sprite");
+  let charSprite = document.getElementById("doge_sprite");
   let userConsole = document.getElementById("console-output")
   if (moveType == "U") {
-    if (pepeCurrentI - 1 >= 0) {
-      if (checkIfWallCollision(pepeCurrentI - 1, pepeCurrentJ)) {
+    if (dogeCurrentI - 1 >= 0) {
+      if (checkIfWallCollision(dogeCurrentI - 1, dogeCurrentJ)) {
         console.log("The UP Move is a Wall");
         return 0;
       } else {
-        map[pepeCurrentI - 1][pepeCurrentJ].style["background-color"] = "green"
-        map[pepeCurrentI - 1][pepeCurrentJ].appendChild(charSprite);
-        mapBox.replaceChild(map[pepeCurrentI - 1][pepeCurrentJ], map[pepeCurrentI - 1][pepeCurrentJ]);
-        pepeCurrentI -= 1;
+        map[dogeCurrentI - 1][dogeCurrentJ].style["background-color"] = "green"
+        map[dogeCurrentI - 1][dogeCurrentJ].appendChild(charSprite);
+        mapBox.replaceChild(map[dogeCurrentI - 1][dogeCurrentJ], map[dogeCurrentI - 1][dogeCurrentJ]);
+        dogeCurrentI -= 1;
       }
     } else {
       errorLog.innerHTML = " > Error - U Move Out Of BOUNDS";
@@ -120,14 +120,14 @@ export const makeMove = (moveType, height, elementID) => {
       return 0
     }
   } else if (moveType == "D") {
-    if (pepeCurrentI + 1 < height) {
-      if (checkIfWallCollision(pepeCurrentI + 1, pepeCurrentJ)) {
+    if (dogeCurrentI + 1 < height) {
+      if (checkIfWallCollision(dogeCurrentI + 1, dogeCurrentJ)) {
         return 0;
       } else {
-        map[pepeCurrentI + 1][pepeCurrentJ].style["background-color"] = "green"
-        map[pepeCurrentI + 1][pepeCurrentJ].appendChild(charSprite);
-        mapBox.replaceChild(map[pepeCurrentI + 1][pepeCurrentJ], map[pepeCurrentI + 1][pepeCurrentJ]);
-        pepeCurrentI += 1;
+        map[dogeCurrentI + 1][dogeCurrentJ].style["background-color"] = "green"
+        map[dogeCurrentI + 1][dogeCurrentJ].appendChild(charSprite);
+        mapBox.replaceChild(map[dogeCurrentI + 1][dogeCurrentJ], map[dogeCurrentI + 1][dogeCurrentJ]);
+        dogeCurrentI += 1;
       }
     } else {
       errorLog.innerHTML = " > Error - D Move Out Of BOUNDS";
@@ -136,14 +136,14 @@ export const makeMove = (moveType, height, elementID) => {
       return 0
     }
   } else if (moveType == "R") {
-    if (map[pepeCurrentI][pepeCurrentJ + 1] != undefined) {
-      if (checkIfWallCollision(pepeCurrentI, pepeCurrentI)) {
+    if (map[dogeCurrentI][dogeCurrentJ + 1] != undefined) {
+      if (checkIfWallCollision(dogeCurrentI, dogeCurrentI)) {
         return 0;
       } else {
-        map[pepeCurrentI][pepeCurrentJ + 1].style["background-color"] = "green"
-        map[pepeCurrentI][pepeCurrentJ + 1].appendChild(charSprite);
-        mapBox.replaceChild(map[pepeCurrentI][pepeCurrentJ + 1], map[pepeCurrentI][pepeCurrentJ + 1]);
-        pepeCurrentJ += 1;
+        map[dogeCurrentI][dogeCurrentJ + 1].style["background-color"] = "green"
+        map[dogeCurrentI][dogeCurrentJ + 1].appendChild(charSprite);
+        mapBox.replaceChild(map[dogeCurrentI][dogeCurrentJ + 1], map[dogeCurrentI][dogeCurrentJ + 1]);
+        dogeCurrentJ += 1;
       }
     } else {
       errorLog.innerHTML = " > Error - R Move Out Of BOUNDS";
@@ -152,14 +152,14 @@ export const makeMove = (moveType, height, elementID) => {
       return 0
     }
   } else if (moveType == "L") {
-    if (map[pepeCurrentI][pepeCurrentJ - 1] != undefined) {
-      if (checkIfWallCollision(pepeCurrentI, pepeCurrentJ-1)) {
+    if (map[dogeCurrentI][dogeCurrentJ - 1] != undefined) {
+      if (checkIfWallCollision(dogeCurrentI, dogeCurrentJ-1)) {
         return 0;
       } else {
-        map[pepeCurrentI][pepeCurrentJ - 1].style["background-color"] = "green"
-        map[pepeCurrentI][pepeCurrentJ - 1].appendChild(charSprite);
-        mapBox.replaceChild(map[pepeCurrentI][pepeCurrentJ - 1], map[pepeCurrentI][pepeCurrentJ - 1]);
-        pepeCurrentJ -= 1;
+        map[dogeCurrentI][dogeCurrentJ - 1].style["background-color"] = "green"
+        map[dogeCurrentI][dogeCurrentJ - 1].appendChild(charSprite);
+        mapBox.replaceChild(map[dogeCurrentI][dogeCurrentJ - 1], map[dogeCurrentI][dogeCurrentJ - 1]);
+        dogeCurrentJ -= 1;
       }
     } else {
       errorLog.innerHTML = " > Error - L Move Out Of BOUNDS";
@@ -260,7 +260,7 @@ export const resetConsole = () => {
 export const checkIfCompleted = (goalBlock) => {
   let endLog = document.createElement("p");
   let userConsole = document.getElementById("console-output")
-  if (map[pepeCurrentI][pepeCurrentJ].id == `block${goalBlock}`) {
+  if (map[dogeCurrentI][dogeCurrentJ].id == `block${goalBlock}`) {
     endLog.innerHTML = "You have reached the end goal! You have completed this challenge."
     userConsole.appendChild(endLog)
     return 0
