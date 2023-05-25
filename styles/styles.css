@@ -44,9 +44,15 @@ body {
 }
 
 #tutorial-instructions {
-    color: rgb(224, 215, 215);
+    color: white;
     margin-left: 0.5vw;
 }
+
+#tutorial-instructions li,p {
+    font-size: 4vh;
+    margin: 2vh;
+}
+
 .console-area {
     border: black 4px solid;
     width: 35vw; 
